@@ -13,7 +13,8 @@ import Error500 from "./pages/error/Error500"
 import GroupDetail from "./pages/group/GroupDetail"
 import GroupCreate from "./pages/group/GroupCreate"
 import FriendMain from "./pages/friend/FriendMain"
-import CreateFunding from "./pages/funding/FundingCreate"
+import FundingDetail from "./pages/funding/FundingDetail"
+import FundingCreate from "./pages/funding/FundingCreate"
 
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
           <Route path="/group/detail" element={<GroupDetail />}/>
           <Route path="/group/create" element={<GroupCreate />}/>
           <Route path="/friend" element={<FriendMain />}/>
-          <Route path="/funding/create" element={<CreateFunding />}/>
+          <Route path="/funding/create" element={<FundingCreate />}/>
+          <Route path="/funding/detail" element={<FundingDetail />}/>
           <Route path="/payment/method" element={<PaymentMethodManagementPage />}/>
         </Route>
         <Route path="/login" element={<LoginPage />}/>

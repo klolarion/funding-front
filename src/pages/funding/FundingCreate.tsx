@@ -24,7 +24,7 @@ const statusCodes = {
   '실버': '904'
 };
 
-const CreateFunding: React.FC = () => {
+const FundingCreate: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('상품');
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [selectedTravel, setSelectedTravel] = useState<any | null>(null);
@@ -192,4 +192,4 @@ const CreateFunding: React.FC = () => {
   );
 };
 
-export default CreateFunding;
+export default FundingCreate;

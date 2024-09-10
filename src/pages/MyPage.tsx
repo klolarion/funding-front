@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 // 예제 데이터
 const member = { memberName: '홍길동', email: 'hong@example.com' };
-const myMainPayment = { paymentMethod: { paymentName: 'Visa', accountNumber: '****1234' } };
+// const myMainPayment = { paymentMethod: { paymentName: 'Visa', accountNumber: '****1234' } };
+const myMainPayment = { paymentMethod: null };
 const myFundingList = [
   { fundingId: 1, productName: '상품 1', progress: 80, totalFundingAmount: 100000, status: '진행중' },
   { fundingId: 2, productName: '상품 2', progress: 60, totalFundingAmount: 80000, status: '진행중' },
@@ -30,6 +31,17 @@ const MyPage: React.FC = () => {
           <Typography variant="body1" gutterBottom>
             {member.email}
           </Typography>
+            <Box>
+              {myMainPayment.paymentMethod && typeof myMainPayment.paymentMethod === 'object' && !Array.isArray(myMainPayment.paymentMethod) ? (
+                <Typography variant="body2">
+                  {myMainPayment.paymentMethod.paymentName} {myMainPayment.paymentMethod.accountNumber}
+                </Typography>
+              ) : (
+                <Typography variant="body2" color="textSecondary">
+                  결제 수단을 추가하세요.
+                </Typography>
+              )}
+          </Box>
           <Box id="mypage-util" mt={2}>
             <Button variant="contained" fullWidth sx={{ mb: 1, backgroundColor: '#ecebeb', color: '#79797e' }}>
               로그아웃
@@ -151,7 +163,8 @@ const MyPage: React.FC = () => {
                       <ListItem
                         key={funding.fundingId}
                         sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
-                        onClick={() => navigate(`/funding/${funding.fundingId}`)}
+                        // onClick={() => navigate(`/funding/${funding.fundingId}`)}
+                        onClick={() => navigate(`/funding/detail`)}
                       >
                         <ListItemText
                           primary={funding.productName}
