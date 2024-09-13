@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+
+
+import React, { useState, useEffect } from "react";
+
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -6,6 +9,12 @@ import Grid from "@mui/material/Grid";
 import FundingCard from "../components/FundingListCard";
 import { TextField, Button, FormGroup, FormControlLabel, Checkbox } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+
+import { FundingDto } from "../types/types";
+import { index } from "../services/FundingApi";
+
+const fundingCategories: Record<number, string> = {
+
 
 // 더미 데이터
 const allFundingList = [
@@ -23,10 +32,23 @@ const fundingCategories = {
 };
 
 export default function Index() {
-  const [searchResults, setSearchResults] = useState(allFundingList);
+
+  const [searchResults, setSearchResults] = useState<FundingDto[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  // 체크박스 변경 핸들러
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await index();
+        setSearchResults(data);
+      } catch (error) {
+        console.error("Failed to fetch funding data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSelectedCategories(prev =>
@@ -34,13 +56,13 @@ export default function Index() {
     );
   };
 
-  // 검색 핸들러
   const handleSearch = () => {
     if (selectedCategories.length === 0) {
-      setSearchResults(allFundingList); // 아무 옵션도 선택되지 않으면 전체 리스트를 보여줌
+      setSearchResults(searchResults);
     } else {
       setSearchResults(
-        allFundingList.filter(funding =>
+        searchResults.filter(funding =>
+
           selectedCategories.includes(fundingCategories[funding.fundingCategoryCode])
         )
       );
@@ -48,8 +70,8 @@ export default function Index() {
   };
 
   return (
+    <>
     <Container maxWidth="lg">
-      {/* 검색 섹션 */}
       <Box display="flex" justifyContent="center" alignItems="center" mt={4} mb={4}>
         <TextField
           label="펀딩 검색"
@@ -68,7 +90,6 @@ export default function Index() {
         </Button>
       </Box>
 
-      {/* 검색 옵션 */}
       <Box display="flex" justifyContent="center" alignItems="center" mb={4}>
         <Typography variant="h6" sx={{ mr: 2 }}>
           검색 옵션
@@ -92,21 +113,21 @@ export default function Index() {
 
       {/* 펀딩 리스트 */}
       <Box my={4}>
-        <Typography variant="h4" gutterBottom>
-          전체 펀딩
-        </Typography>
         <Grid container spacing={2}>
           {searchResults.length > 0 ? (
             searchResults.map((funding) => (
               <FundingCard key={funding.fundingId} funding={funding} />
             ))
           ) : (
+            
             <Typography variant="body2" color="textSecondary">
               펀딩을 만들어 보세요!
             </Typography>
           )}
         </Grid>
       </Box>
+
+
     </Container>
-  );
-}
+        </>)
+};
