@@ -1,5 +1,7 @@
 
+
 import React, { useState, useEffect } from "react";
+
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -7,10 +9,22 @@ import Grid from "@mui/material/Grid";
 import FundingCard from "../components/FundingListCard";
 import { TextField, Button, FormGroup, FormControlLabel, Checkbox } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+
 import { FundingDto } from "../types/types";
 import { index } from "../services/FundingApi";
 
 const fundingCategories: Record<number, string> = {
+
+
+// 더미 데이터
+const allFundingList = [
+  { fundingId: 1, fundingCategoryCode: 901, progress: 75, productName: 'Product 1', currentFundingAmount: 50000, totalFundingAmount: 100000 },
+  { fundingId: 2, fundingCategoryCode: 902, progress: 50, travelName: 'Travel 1', currentFundingAmount: 30000, totalFundingAmount: 60000 },
+  { fundingId: 3, fundingCategoryCode: 903, progress: 25, productName: 'Product 2', currentFundingAmount: 10000, totalFundingAmount: 950000 },
+  { fundingId: 4, fundingCategoryCode: 904, progress: 0, productName: 'Product 3', currentFundingAmount: 33300, totalFundingAmount: 100000 },
+];
+
+const fundingCategories = {
   901: "상품",
   902: "여행",
   903: "핑크",
@@ -18,6 +32,7 @@ const fundingCategories: Record<number, string> = {
 };
 
 export default function Index() {
+
   const [searchResults, setSearchResults] = useState<FundingDto[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
@@ -47,6 +62,7 @@ export default function Index() {
     } else {
       setSearchResults(
         searchResults.filter(funding =>
+
           selectedCategories.includes(fundingCategories[funding.fundingCategoryCode])
         )
       );
@@ -95,6 +111,7 @@ export default function Index() {
         </FormGroup>
       </Box>
 
+      {/* 펀딩 리스트 */}
       <Box my={4}>
         <Grid container spacing={2}>
           {searchResults.length > 0 ? (

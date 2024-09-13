@@ -12,6 +12,13 @@ import { MyPageDto } from '../types/types';
 const myMainPayment = { paymentMethod: null};
 const myFundingList = [
   { fundingId: 1, productName: '상품 1', progress: 80, totalFundingAmount: 100000, status: '진행중' },
+  { fundingId: 2, productName: '상품 2', progress: 60, totalFundingAmount: 80000, status: '진행중' },
+  { fundingId: 3, productName: '상품 3', progress: 20, totalFundingAmount: 80000, status: '진행중' },
+  { fundingId: 4, productName: '상품 4', progress: 40, totalFundingAmount: 80000, status: '진행중' },
+  { fundingId: 5, productName: '상품 5', progress: 50, totalFundingAmount: 80000, status: '진행중' },
+  { fundingId: 6, productName: '상품 6', progress: 90, totalFundingAmount: 80000, status: '진행중' },
+  { fundingId: 7, productName: '상품 7', progress: 0, totalFundingAmount: 80000, status: '진행중' },
+  { fundingId: 8, productName: '상품 8', progress: 100, totalFundingAmount: 80000, status: '완료' },
 ];
 
 const borderColorMap: { [key: string]: string } = {
@@ -53,6 +60,7 @@ const MyPage: React.FC = () => {
       <Box display="flex" justifyContent="space-between" mt={4}>
         {/* User Profile Section */}
         <Box id="mypage-left" textAlign="center" borderRight="1px solid #ccc" pr={4} minWidth="200px">
+
           {/* 사용자 상태 표시 */}
           <Typography
             variant="body2"
@@ -83,6 +91,17 @@ const MyPage: React.FC = () => {
           <Typography variant="body1" gutterBottom>
             {memberDto.email}
           </Typography>
+            <Box>
+              {myMainPayment.paymentMethod && typeof myMainPayment.paymentMethod === 'object' && !Array.isArray(myMainPayment.paymentMethod) ? (
+                <Typography variant="body2">
+                  {myMainPayment.paymentMethod.paymentName} {myMainPayment.paymentMethod.accountNumber}
+                </Typography>
+              ) : (
+                <Typography variant="body2" color="textSecondary">
+                  결제 수단을 추가하세요.
+                </Typography>
+              )}
+          </Box>
           <Box id="mypage-util" mt={2}>
             <Button variant="contained" fullWidth sx={{ mb: 1, backgroundColor: '#ecebeb', color: '#79797e' }}>
               로그아웃
@@ -93,11 +112,9 @@ const MyPage: React.FC = () => {
           </Box>
         </Box>
 
-        
-
         {/* Main Content Section */}
         <Box flexGrow={1} ml={4}>
-          <Grid container spacing={4}>
+          <Grid container spacing={2}>
 
             {/* Combined Container for Activity and Management Buttons */}
             <Grid item xs={12}>
@@ -231,96 +248,116 @@ const MyPage: React.FC = () => {
             </Grid>
 
 
-            {/* Group Section */}
-            <Grid item xs={12} md={4}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent sx={{ height: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                  <Typography variant="h6">그룹 관리</Typography>
-                
-                  <Button variant="contained" fullWidth sx={{ mt: 2 }} onClick={() => navigate('/group/manage')}>
-                    그룹 관리
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
+                {/* Management Section Buttons */}
+                <Grid item xs={12} md={6}>
+                  <Grid container spacing={2} sx={{ height: '100%' }}>
+                    {/* Button Height Adjusted */}
+                    <Grid item xs={6}>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        sx={{ height: 60, backgroundColor: "#4949cc", "&:hover": { backgroundColor: "#3b3bb2" } }}
+                        onClick={() => navigate("/payment/method")}
+                      >
+                        결제수단 관리
+                      </Button>
+                    </Grid>
 
-            
+                    <Grid item xs={6}>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        sx={{ height: 60, backgroundColor: "#4949cc", "&:hover": { backgroundColor: "#3b3bb2" } }}
+                        onClick={() => navigate("/group/manage")}
+                      >
+                        그룹 관리
+                      </Button>
+                    </Grid>
 
-            {/* Friend Section */}
-            <Grid item xs={12} md={4}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent sx={{ height: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                  <Typography variant="h6">친구 관리</Typography>
-                  <Box>
-                      <Typography variant="body2">
-                      </Typography>
-                  </Box>
-                  <Button variant="contained" fullWidth sx={{ mt: 2 }} onClick={() => navigate('/friend')}>
-                    친구 관리
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
+                    <Grid item xs={6}>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        sx={{ height: 60, backgroundColor: "#4949cc", "&:hover": { backgroundColor: "#3b3bb2" } }}
+                        onClick={() => navigate("/friend")}
+                      >
+                        친구 관리
+                      </Button>
+                    </Grid>
 
+                    <Grid item xs={6}>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        sx={{ height: 60, backgroundColor: "#4949cc", "&:hover": { backgroundColor: "#3b3bb2" } }}
+                        onClick={() => navigate("/mypayments")}
+                      >
+                        결제 목록
+                      </Button>
+                    </Grid>
 
-            {/* Payment Section */}
-            <Grid item xs={12} md={4}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent sx={{ height: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                  <Typography variant="h6">결제목록</Typography>
-                
-                  <Button variant="contained" fullWidth sx={{ mt: 2 }} onClick={() => navigate('/mypayments')}>
-                    결제목록
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
+                    <Grid item xs={6}>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        sx={{ height: 60, backgroundColor: "#4949cc", "&:hover": { backgroundColor: "#3b3bb2" } }}
+                        onClick={() => navigate("/order")}
+                      >
+                        구매 내역
+                      </Button>
+                    </Grid>
 
-            {/* Order Section */}
-            <Grid item xs={12} md={4}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent sx={{ height: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                  <Typography variant="h6">구매내역</Typography>
-                
-                  <Button variant="contained" fullWidth sx={{ mt: 2 }}>
-                    구매내역
-                  </Button>
-                </CardContent>
-              </Card>
+                    <Grid item xs={6}>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        sx={{ height: 60, backgroundColor: "#4949cc", "&:hover": { backgroundColor: "#3b3bb2" } }}
+                        onClick={() => navigate("/register")}
+                      >
+                        핑크/실버 신청
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
 
             {/* Funding Section */}
-            <Grid item xs={12} md={6}>
-      <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" gutterBottom>
-            나의 펀딩 내역
-          </Typography>
-          <List>
-            {myFundingList.map((funding) => (
-              <ListItem key={funding.fundingId} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <ListItemText
-                  primary={funding.productName}
-                  secondary={`진행률: ${funding.progress}% | 총 금액: ${funding.totalFundingAmount.toLocaleString()}원`}
-                />
-                <Chip
-                  label={funding.status}
-                  sx={{
-                    borderRadius: '20px',
-                    backgroundColor: funding.status === '완료' ? '#4caf50' : '#E9E9FAFF',
-                    color: funding.status === '완료' ? '#fff' : '#7171DFFF',
-                    fontSize: 'small',
-                    padding: '0 10px',
-                  }}
-                />
-              </ListItem>
-            ))}
-          </List>
-        </CardContent>
-      </Card>
-    </Grid>
+            <Grid item xs={12}>
+              <Card sx={{ height: 'auto' }}>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant="h6" gutterBottom>
+                    나의 펀딩 내역
+                  </Typography>
+                  <List sx={{ width: '100%' }}>
+                    {myFundingList.map((funding) => (
+                      <ListItem
+                        key={funding.fundingId}
+                        sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
+                        // onClick={() => navigate(`/funding/${funding.fundingId}`)}
+                        onClick={() => navigate(`/funding/detail`)}
+                      >
+                        <ListItemText
+                          primary={funding.productName}
+                          secondary={`진행률: ${funding.progress}% | 총 금액: ${funding.totalFundingAmount.toLocaleString()}원`}
+                        />
+                        <Chip
+                          label={funding.status}
+                          sx={{
+                            borderRadius: '20px',
+                            backgroundColor: funding.status === '완료' ? '#4caf50' : '#E9E9FAFF',
+                            color: funding.status === '완료' ? '#fff' : '#7171DFFF',
+                            fontSize: 'small',
+                            padding: '0 10px',
+                          }}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </CardContent>
+              </Card>
+            </Grid>
 
-    
           </Grid>
         </Box>
       </Box>

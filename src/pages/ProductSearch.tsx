@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Box, TextField, Button, Grid, Card, CardContent, Typography, CardMedia } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+
 import { search } from '../services/FundingApi';
 import { ProductSearchDto } from '../types/types';
 
@@ -145,6 +146,7 @@ import { ProductSearchDto } from '../types/types';
 // ];
 
 const ProductSearch: React.FC = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<ProductSearchDto[]>([]);
 
@@ -215,6 +217,15 @@ const ProductSearch: React.FC = () => {
                 sx={{ m: 1 }}
               >
                 자세히 보기
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                rel="noopener"
+                sx={{ m: 1 }}
+                onClick={() => navigate('/funding/create')}
+              >
+                펀딩 생성하기
               </Button>
             </Card>
           </Grid>
