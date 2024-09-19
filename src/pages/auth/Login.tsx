@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { accountCheck } from '../../services/AuthApi';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const [account, setAccount] = useState('');
+  const [error, setError] = useState('');
+
+  const handleAccountCheck = async (e) => {
+    e.preventDefault();
+    try{
+      const response = await accountCheck(account); 
+        if (response.status === 200) {
+          const provider = response.data;
+          // 상태값을 가지고 라우팅, B 페이지로 provider 전달
+          navigate('/social', { state: { provider } });
+        } 
+      }catch{
+        // 가입을 안한경우와 아직 소셜로그인을 안한경우 구분해야함 <---
+      navigate('/social', { state: null });
+    }
+  
+  };
   
     return (
         <Container
@@ -33,23 +52,26 @@ const LoginPage: React.FC = () => {
               로그인
             </Typography>
             <TextField
-              label="이메일"
+              label="계정"
               variant="outlined"
               fullWidth
               sx={{ mb: 3 }}
-              type="email"
+              type="text"
+              value={account}
+              onChange={(e) => setAccount(e.target.value)}
             />
             <Button
               variant="contained"
               color="primary"
               fullWidth
               sx={{ backgroundColor: '#4949cc', '&:hover': { backgroundColor: '#3b3bb2' } }}
-              onClick={() => navigate('/social')}
+              onClick={handleAccountCheck}
             >
               제출
             </Button>
             <br/>
-            <Typography onClick={() => navigate('/social')}>
+            <Typography onClick={() => navigate('/register')} sx={{ cursor: 'pointer' }} // 커서 모양을 손가락(포인터)으로 변경
+            >
                 처음 방문이신가요 ?
             </Typography>
           </Box>

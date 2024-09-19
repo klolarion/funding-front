@@ -320,7 +320,6 @@ const MyPage: React.FC = () => {
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
 
             {/* Funding Section */}
             <Grid item xs={12}>
@@ -358,7 +357,6 @@ const MyPage: React.FC = () => {
               </Card>
             </Grid>
 
-          </Grid>
         </Box>
       </Box>
     </Container>

@@ -16,7 +16,7 @@ export const search = async (searchParam: string) => {
 }
 
 export const myPage = async () => {
-    const response = await fundingApi.get<MyPageDto>(`/api/f2/v1/mypage`);
+    const response = await fundingApi.get<MyPageDto>(`/api/f2/v1/my-page`);
     return response.data;
 }
 
@@ -31,4 +31,9 @@ export const joinFunding = async (joinFundingDto: JoinFundingDto) => {
           'Content-Type': 'application/json',
         },})
     return response.data;
+}
+
+export const searchFunding = async (searchParam: string, fundingCategoryCode: string) => {
+    const response = await fundingApi.get<FundingDto[]>(`/api/f2/v1/funding/${encodeURIComponent(searchParam)}/${encodeURIComponent(fundingCategoryCode)}`)
+    return response.data; 
 }
