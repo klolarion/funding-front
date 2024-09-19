@@ -18,6 +18,8 @@ import FundingDetail from "./pages/funding/FundingDetail"
 import FundingOrder from "./pages/funding/FundingOrder"
 import RegisterMemberStatus from "./pages/RegisterMemberStatus"
 import RegisterPage from "./pages/auth/Register"
+import AdminPage from "./pages/admin/AdminPage"
+import FundingCreate from "./pages/funding/FundingCreate"
 
 
 function App() {
@@ -35,7 +37,7 @@ function App() {
           <Route path="/group/detail" element={<GroupDetail />}/>
           <Route path="/group/create" element={<GroupCreate />}/>
           <Route path="/friend" element={<FriendMain />}/>
-          {/* <Route path="/funding/create" element={<FundingCreate />}/> */}
+          <Route path="/funding/create" element={<FundingCreate />}/>
           <Route path="/funding/detail/:fundingId" element={<FundingDetail />}/>
           <Route path="/funding/order" element={<FundingOrder />}/>
           <Route path="/payment/method" element={<PaymentMethodManagementPage />}/>
@@ -45,6 +47,7 @@ function App() {
         <Route path="/social" element={<SocialLogin />}/>
         <Route path="/404" element={<Error404 />}/>
         <Route path="/500" element={<Error500 />}/>
+        <Route path="/admin" element={<AdminPage />}/>
       </Routes>
       
     </>

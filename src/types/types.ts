@@ -3,7 +3,7 @@ export interface ProductSearchDto {
     link: string,
     image: string,
     lprice: number,
-    mallname: string,
+    mallName: string,
     productId: number,
     productType: number,
     category1: string,
@@ -43,6 +43,7 @@ export interface PaymentMethodList{
     offCd: boolean;
 
 }
+
 export interface GroupDto{
  groupId: number;
  groupLeaderId: number;
@@ -53,6 +54,7 @@ export interface GroupDto{
 //  groupFunding: Funding[];
 
 }
+
 export interface Payment{
     paymentId: number;
     paymentMethod: PaymentMethod;
@@ -72,7 +74,6 @@ export interface MyActivity{
     createdGroupCount: number;
     joinedGroupCount: number;
 }
-
 
 export interface MemberDto{
     memberId: number;
@@ -103,4 +104,9 @@ export interface JoinFundingDto{
     memberId: number,
     groupId: number,
     paymentMethodListId: number,
+}
+
+export interface RegisterDto{
+    account: string,
+    tel: string
 }
