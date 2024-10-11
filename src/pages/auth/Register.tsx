@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { lookAccount, lookTel, register } from '../../services/AuthApi';
 import { RegisterDto } from '../../types/types';
@@ -8,14 +7,16 @@ import { RegisterDto } from '../../types/types';
 const RegisterPage: React.FC = () => {
   const [account, setAccount] = useState('');
   const [tel, setTel] = useState('');
+  const [memberName, setMemberName] = useState('');
   const [error, setError] = useState('');
   const [accountStatus, setAccountStatus] = useState('');
+  const [nameStatus, setNameStatus] = useState('');
   const [telStatus, setTelStatus] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = async () => {
     // 입력값이 모두 'success' 상태인지 확인
-    if (accountStatus !== 'success' || telStatus !== 'success') {
+    if (accountStatus !== 'success' || telStatus !== 'success' || nameStatus != 'success') {
       alert('모든 입력값을 확인해주세요.');
       return;
     }
@@ -32,6 +33,10 @@ const RegisterPage: React.FC = () => {
   };
 
   const handleAccountCheck = async () => {
+    if(account == ''){
+      setAccountStatus('error');
+      return;
+    }
     try {
       const response = await lookAccount(account);
       if (response.status === 200) {
@@ -42,7 +47,19 @@ const RegisterPage: React.FC = () => {
     }
   };
 
+  const handleNameCheck = async () => {
+    if(memberName != ''){
+      setNameStatus('success');
+    }else{
+      setNameStatus('error');
+    }
+  };
+
   const handleTelCheck = async () => {
+    if(tel == ''){
+      setTelStatus('error');
+      return;
+    }
     try {
       const response = await lookTel(tel);
       if (response.status === 200) {
@@ -63,6 +80,11 @@ const RegisterPage: React.FC = () => {
   const handleAccountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAccount(e.target.value);
     setAccountStatus('');
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMemberName(e.target.value);
+    setNameStatus('');
   };
 
   const handleTelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,6 +119,28 @@ const RegisterPage: React.FC = () => {
               sx={{ height: '100%' }}
             >
               중복 체크
+            </Button>
+          </Grid>
+          <Grid item xs={9}>
+            <TextField
+              label="이름 입력"
+              variant="outlined"
+              fullWidth
+              value={memberName}
+              onChange={handleNameChange}
+              sx={{ mb: 2 }}
+              style={{ border: getBorderColor(nameStatus) }}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <Button
+              variant="contained"
+              color={nameStatus === 'success' ? 'success' : nameStatus === 'error' ? 'error' : 'primary'}
+              fullWidth
+              onClick={handleNameCheck}
+              sx={{ height: '100%' }}
+            >
+              입력 확인
             </Button>
           </Grid>
           <Grid item xs={9}>

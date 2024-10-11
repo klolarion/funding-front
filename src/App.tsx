@@ -42,8 +42,6 @@ function App() {
           <Route path="/funding/order" element={<FundingOrder />}/>
           <Route path="/payment/method" element={<PaymentMethodManagementPage />}/>
         </Route>
-        <Route path="/login" element={<LoginPage />}/>
-        <Route path="/register" element={<RegisterPage />}/>
         <Route path="/social" element={<SocialLogin />}/>
         <Route path="/404" element={<Error404 />}/>
         <Route path="/500" element={<Error500 />}/>

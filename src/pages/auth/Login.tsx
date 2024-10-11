@@ -15,11 +15,11 @@ const LoginPage: React.FC = () => {
         if (response.status === 200) {
           const provider = response.data;
           // 상태값을 가지고 라우팅, B 페이지로 provider 전달
-          navigate('/social', { state: { provider } });
+          navigate('/social', { state: { provider, account } });
         } 
       }catch{
         // 가입을 안한경우와 아직 소셜로그인을 안한경우 구분해야함 <---
-      navigate('/social', { state: null });
+      navigate('/social', { state: { account } });
     }
   
   };

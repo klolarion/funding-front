@@ -12,7 +12,7 @@ const SocialLogin: React.FC = () => {
   const handleGoogleLogin = async () => {
     try {
       // 백엔드의 Google 로그인 엔드포인트로 요청
-      window.location.href = 'http://localhost:9091/oauth2/authorization/google';
+      window.location.href = `http://localhost:9091/oauth2/authorization/google`;
     } catch (error) {
       console.error('Google Login Error:', error);
     }
@@ -21,7 +21,7 @@ const SocialLogin: React.FC = () => {
   const handleNaverLogin = async () => {
     try {
       // 백엔드의 Naver 로그인 엔드포인트로 요청
-      window.location.href = 'http://localhost:9091/oauth2/authorization/naver';
+      window.location.href = `http://localhost:9091/oauth2/authorization/naver`;
     } catch (error) {
       console.error('Naver Login Error:', error);
     }
@@ -30,7 +30,7 @@ const SocialLogin: React.FC = () => {
   const handleKakaoLogin = async () => {
     try {
       // 백엔드의 Kakao 로그인 엔드포인트로 요청
-      window.location.href = 'http://localhost:9091/oauth2/authorization/kakao';
+      window.location.href = `http://localhost:9091/oauth2/authorization/kakao`;
     } catch (error) {
       console.error('Kakao Login Error:', error);
     }

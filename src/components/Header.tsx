@@ -14,7 +14,7 @@ const Header: React.FC = () => {
         </Typography>
         <Box display="flex" alignItems="center">
           <Button color="inherit" onClick={() => navigate('/')}>Home</Button>
-          <Button color="inherit" onClick={() => navigate('/login')}>Login</Button>
+          <Button color="inherit" onClick={() => navigate('/social')}>Login</Button>
           <Button color="inherit" onClick={() => navigate('/mypage')}>My page</Button>
           <Button
             onClick={() => navigate('/search')}
