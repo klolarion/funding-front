@@ -119,3 +119,31 @@ export interface PaymentMethodDto{
     accountNumber: string,
     availableAmount: number
 }
+
+export interface PaymentDto{
+    paymentId: number;
+    memberId: number;
+    paymentAccount: string;
+    paymentMethodName: string;
+    targetAccount: string;
+    amount: number;
+    balanceBefore: number;
+    balanceAfter: number;
+    createDate: string;
+
+}
+
+export interface GroupPageDto{
+    createdGroup: GroupDto[],
+    assignedGroup: GroupDto[],
+}
+
+export interface GroupDto{
+    groupId: number;
+    groupLeaderId: number;
+    groupLeaderName: string;
+    groupName: string;
+    groupMemberCount: number;
+    groupCategoryCode: number;
+    groupFunding: [];
+}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FundingDto, JoinFundingDto, MyPageDto, MyPaymentMethodList, ProductSearchDto } from "../types/types";
+import { FundingDto, GroupDto, JoinFundingDto, MyPageDto, MyPaymentMethodList, PaymentDto, ProductSearchDto } from "../types/types";
 
 const fundingApi = axios.create({
     baseURL: "http://localhost:9091"
@@ -42,7 +42,7 @@ export const joinFunding = async (joinFundingDto: JoinFundingDto) => {
     return response.data;
 }
 
-export const searchFunding = async (searchParam: string, fundingCategoryCode: string) => {
+export const searchFunding = async (searchParam: string, fundingCategoryCode: number) => {
     const response = await fundingApi.get<FundingDto[]>(
         `/api/f2/v1/funding/${ encodeURIComponent(searchParam)}/search`, 
         {
@@ -87,5 +87,23 @@ export const removeFromMyPaymentMethod = async (paymentMethodListId: number) => 
         headers: {
           'Content-Type': 'application/json',
         },})
+    return response;
+}
+
+export const getMyPayments = async () => {
+    const response = await fundingApi.get<PaymentDto[]>(`/api/f2/v1/payment`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },})
+    
+    return response;
+}
+
+export const getMyGroups = async () => {
+    const response = await fundingApi.get<GroupDto[]>(`/api/f2/v1/group`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },})
+    
     return response;
 }

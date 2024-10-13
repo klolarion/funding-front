@@ -127,7 +127,7 @@ const myActivitys = { myFundingCount: myActivity.myFundingCount, fundingAmount: 
                       
                       <Box justifyContent="space-between" mb={1}>
                         <Typography variant="body2">펀딩 개설 수: {myActivitys.myFundingCount}</Typography>
-                        <Typography variant="body2">펀딩 참여금액: {myActivitys.fundingAmount}</Typography>
+                        <Typography variant="body2">펀딩 참여금액: {myActivitys.fundingAmount.toLocaleString()}</Typography>
                         <Typography variant="body2">만든 그룹 수: {myActivitys.createdGroupCount}</Typography>
                         <Typography variant="body2">참여 그룹 수: {myActivitys.joinedGroupCount}</Typography>
                       </Box>

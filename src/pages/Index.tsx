@@ -24,11 +24,11 @@ const fundingCategories: Record<number, string> = {
 export default function Index() {
 
   const [searchParam, setSearchParam] = useState<string>(' '); //pathVarible null값 대응
-  const [fundingCategoryCode, setFundingCategoryCode] = useState<string>(''); // 숫자형 상태
+  const [fundingCategoryCode, setFundingCategoryCode] = useState<number>(0); // 숫자형 상태
   const [searchResults, setSearchResults] = useState<FundingDto[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // 숫자형 상태
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); // 로그인 상태 관리 (임시로 true 설정)
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
