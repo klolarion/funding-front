@@ -14,11 +14,10 @@ const FundingCard: React.FC<FundingCardProps> = ({ funding }) => {
     fundingCategoryCode,
     progress,
     productName,
-    travelName,
     currentFundingAmount,
     totalFundingAmount,
     groupName,
-    memberName,
+    nickName,
     status
   } = funding;
 
@@ -47,13 +46,12 @@ const FundingCard: React.FC<FundingCardProps> = ({ funding }) => {
               {progress}%
             </Typography>
             {productName && <Typography variant="body1">{productName}</Typography>}
-            {travelName && <Typography variant="body1">{travelName}</Typography>}
             <Typography variant="body2" color="textSecondary">
               {currentFundingAmount.toLocaleString()}원 / {totalFundingAmount.toLocaleString()}원
             </Typography>
             {/* 추가적으로 그룹명과 회원명을 표시하고 싶다면 */}
             <Typography variant="body2" color="textSecondary">
-              주최: {groupName || memberName}
+              주최: {groupName || nickName}
             </Typography>
             {/* 상태 표시 */}
             <Typography variant="body2" color="textSecondary">

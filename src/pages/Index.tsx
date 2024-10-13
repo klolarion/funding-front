@@ -23,11 +23,12 @@ const fundingCategories: Record<number, string> = {
 
 export default function Index() {
 
-  const [searchParam, setSearchParam] = useState<string>('');
+  const [searchParam, setSearchParam] = useState<string>(' '); //pathVarible null값 대응
   const [fundingCategoryCode, setFundingCategoryCode] = useState<string>(''); // 숫자형 상태
   const [searchResults, setSearchResults] = useState<FundingDto[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // 숫자형 상태
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); // 로그인 상태 관리 (임시로 true 설정)
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -60,10 +61,10 @@ export default function Index() {
       alert('검색어를 입력하세요')
     }
     try{
-      const data = await searchFunding(searchParam, fundingCategoryCode);
-      setSearchResults(data);
+      const response = await searchFunding(searchParam, fundingCategoryCode);
+      setSearchResults(response.data);
     }catch(error){
-      console.log(error);
+      alert('결과가 없습니다')
     }
 
   };
@@ -117,6 +118,7 @@ export default function Index() {
       </Box>
       </>
       )}
+
       {/* 펀딩 리스트 */}
       <Box my={4}>
         <Grid container spacing={2}>

@@ -1,52 +1,120 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Box, Typography, Button, Grid, Card, CardContent, CardMedia } from '@mui/material';
+import { addToMyPaymentMethod, myPaymentMethod, removeFromMyPaymentMethod, setMainPaymentMethod } from '../../services/FundingApi';
+import { PaymentMethod, PaymentMethodDto } from '../../types/types';
 
-// 결제 수단 타입 정의
-interface PaymentMethod {
-  paymentMethodId: string;
-  paymentName: string;
-  accountNumber?: string;
-  availableAmount?: string;
-}
+
+
 
 // 샘플 데이터
-const mainPaymentMethod: PaymentMethod | null = {
-  paymentMethodId: '1',
-  paymentName: 'NH 어쩌구 저쩌구',
-  accountNumber: '123-123456-123',
-  availableAmount: '123456',
-};
+// const mainPaymentMethod: PaymentMethod | null = {
+//   paymentMethodId: '1',
+//   paymentName: 'NH 어쩌구 저쩌구',
+//   accountNumber: '123-123456-123',
+//   availableAmount: '123456',
+// };
 
-const myPaymentList: PaymentMethod[] = [
-  { paymentMethodId: '2', paymentName: 'KB 국민은행', accountNumber: '111-111111-111', availableAmount: '100000' },
-  { paymentMethodId: '3', paymentName: '신한은행', accountNumber: '222-222222-222', availableAmount: '200000' },
-];
+// const myPaymentList: PaymentMethod[] = [
+//   { paymentMethodId: '2', paymentName: 'KB 국민은행', accountNumber: '111-111111-111', availableAmount: '100000' },
+//   { paymentMethodId: '3', paymentName: '신한은행', accountNumber: '222-222222-222', availableAmount: '200000' },
+// ];
 
-const paymentMethodList: PaymentMethod[] = [
-  { paymentMethodId: '4', paymentName: '우리은행' },
-  { paymentMethodId: '5', paymentName: '하나은행' },
-];
 
+// const paymentMethodList: PaymentMethod[] = [
+//   { paymentMethodId: '4', paymentName: '우리은행' },
+//   { paymentMethodId: '5', paymentName: '하나은행' },
+// ];
+
+
+
+
+  
 const PaymentMethodManagementPage: React.FC = () => {
-  const [selectedPaymentMethodId, setSelectedPaymentMethodId] = useState<string | null>(null);
-  const [mainMethod, setMainMethod] = useState<PaymentMethod | null>(mainPaymentMethod);
+  // 데이터 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await myPaymentMethod(); // API 호출
 
-  const handleSelectPaymentMethod = (paymentMethodId: string) => {
+
+        const my = response.data.paymentMethodLists;
+        const all = response.data.paymentMethods;
+        const main = response.data.mainPaymentMethod;
+
+        let filtered = all.filter(
+            all => !my.some(
+              my => my.paymentMethodId === all.paymentMethodId
+          ) &&
+          main.paymentMethodId !== all.paymentMethodId
+        );
+
+
+
+        setAllPaymentMethodList(filtered); //모든 결제수단(내 결제수단에 등록된 요소 삭제)
+        
+      
+        setMainMethod(response.data.mainPaymentMethod); //메인 결제수단
+        setMyPaymentMethodList(response.data.paymentMethodLists); //내 결제수단
+
+      } catch (error) {
+        console.error('Failed to fetch payment method data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  const [selectedPaymentMethodId, setSelectedPaymentMethodId] = useState<number>(0);
+  const [mainMethod, setMainMethod] = useState<PaymentMethod | null>(null);
+  const [myPaymentMethodList, setMyPaymentMethodList] = useState<PaymentMethod[]>([]);
+  const [allPaymentMethodList, setAllPaymentMethodList] = useState<PaymentMethodDto[]>([]);
+  
+
+  const handleSelectPaymentMethod = (paymentMethodId: number) => {
     setSelectedPaymentMethodId(paymentMethodId);
   };
 
-  const handleSetMainPaymentMethod = (paymentMethodId: string) => {
-    const selectedMethod = myPaymentList.find((method) => method.paymentMethodId === paymentMethodId);
-    setMainMethod(selectedMethod || null);
+  //내 결제수단목록중 하나를 주 결제수단으로 설정
+  const handleSetMainPaymentMethod = async (paymentMethodListId: number) => {
+    try{
+      const response = await setMainPaymentMethod(paymentMethodListId);
+      if(response.status === 200){
+        window.location.reload();
+      }else{
+        console.log(response.status)
+      }
+    }catch (error){
+      console.error("Failed to fetch data:", error);
+    }
   };
 
-  const handleDeletePaymentMethod = (paymentMethodId: string) => {
-    alert(`결제 수단 ${paymentMethodId}을(를) 삭제합니다.`);
+  //내 결제수단목록에서 제거(주 결제수단이 아니어야함)
+  const handleDeletePaymentMethod = async (paymentMethodListId: number) => {
+
+    try{
+      const response = await removeFromMyPaymentMethod(paymentMethodListId);
+      if(response.status === 200){
+        window.location.reload();
+      }else{
+        console.log(response.status)
+      }
+    }catch (error){
+      console.error("Failed to fetch data:", error);
+    }
   };
 
-  const handleRegisterPaymentMethod = () => {
-    if (selectedPaymentMethodId) {
-      alert(`결제 수단 ${selectedPaymentMethodId}을(를) 등록합니다.`);
+  //결제수단을 내 결제수단목록에 추가
+  const handleAddPaymentMethod = async (paymentMethodId: number) => {
+    try{
+      const response = await addToMyPaymentMethod(paymentMethodId);
+      if(response.status === 200){
+        window.location.reload();
+      }else{
+        console.log(response.status)
+      }
+    }catch (error){
+      console.error("Failed to fetch data:", error);
     }
   };
 
@@ -72,10 +140,10 @@ const PaymentMethodManagementPage: React.FC = () => {
               />
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                  {mainMethod.paymentName}
+                  {mainMethod.paymentMethodName}
                 </Typography>
                 <Typography variant="body1" sx={{ fontSize: '1.2rem', color: '#333' }}>
-                  계좌번호: {mainMethod.accountNumber}
+                  계좌번호: {mainMethod.paymentMethodAccountNumber}
                 </Typography>
                 <Typography variant="body1" sx={{ fontSize: '1.2rem', color: '#333' }}>
                   잔액: {Number(mainMethod.availableAmount).toLocaleString()}원
@@ -94,23 +162,23 @@ const PaymentMethodManagementPage: React.FC = () => {
           내 결제 수단 리스트
         </Typography>
         <Grid container spacing={2}>
-          {myPaymentList.map((method) => (
+          {myPaymentMethodList.map((method) => (
             <Grid item xs={12} md={6} key={method.paymentMethodId}>
               <Card sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                 <CardContent>
-                  <Typography variant="h6">{method.paymentName}</Typography>
+                  <Typography variant="h6">{method.paymentMethodName}</Typography>
                   <Typography variant="body2" color="textSecondary">
-                    계좌번호: {method.accountNumber}
+                    계좌번호: {method.paymentMethodAccountNumber}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
                     잔액: {Number(method.availableAmount).toLocaleString()}원
                   </Typography>
                 </CardContent>
                 <Box display="flex" justifyContent="space-between" p={2}>
-                  <Button variant="contained" color="primary" onClick={() => handleSetMainPaymentMethod(method.paymentMethodId)}>
+                  <Button variant="contained" color="primary" onClick={() => handleSetMainPaymentMethod(method.paymentMethodListId)}>
                     대표 설정
                   </Button>
-                  <Button variant="outlined" color="error" onClick={() => handleDeletePaymentMethod(method.paymentMethodId)}>
+                  <Button variant="outlined" color="error" onClick={() => handleDeletePaymentMethod(method.paymentMethodListId)}>
                     삭제
                   </Button>
                 </Box>
@@ -125,7 +193,7 @@ const PaymentMethodManagementPage: React.FC = () => {
             결제 수단 등록하기
           </Typography>
           <Grid container spacing={2}>
-            {paymentMethodList.map((method) => (
+            {allPaymentMethodList.map((method) => (
               <Grid item xs={6} md={4} key={method.paymentMethodId}>
                 <Card
                   sx={{
@@ -145,7 +213,7 @@ const PaymentMethodManagementPage: React.FC = () => {
             variant="contained"
             color="secondary"
             sx={{ mt: 2 }}
-            onClick={handleRegisterPaymentMethod}
+            onClick={() => handleAddPaymentMethod(selectedPaymentMethodId)}
             disabled={!selectedPaymentMethodId}
           >
             내 결제 수단으로 등록하기

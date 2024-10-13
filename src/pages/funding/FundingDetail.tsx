@@ -1,32 +1,32 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { Container, Box, Typography, Button, TextField } from '@mui/material';
-import { CheckCircle, Error } from '@mui/icons-material'; // Correct import for error icon
+import { CheckCircle, Error } from '@mui/icons-material';
 import { fundingDetail, joinFunding } from '../../services/FundingApi';
 import { FundingDto, JoinFundingDto } from '../../types/types';
 import { useParams } from 'react-router-dom';
 
 const FundingDetail: React.FC = () => {
-  const { fundingId } = useParams<{ fundingId: string }>(); // Extract fundingId from URL params
-  const [funding, setFunding] = useState<FundingDto | null>(null); // State for funding details
-  const [amount, setAmount] = useState<number | null>(null); // State for the amount input
+  const { fundingId } = useParams<{ fundingId: string }>();
+  const [funding, setFunding] = useState<FundingDto | null>(null); 
+  const [amount, setAmount] = useState<number | null>(null); 
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null); // State for notifications
-  const [isGoalReached, setIsGoalReached] = useState<boolean>(false); // State for checking if goal is reached
+  const [isGoalReached, setIsGoalReached] = useState<boolean>(false); 
 
   // Function to fetch funding details
   const fetchData = useCallback(async () => {
     try {
       if (fundingId) {
-        const data = await fundingDetail(fundingId); // Fetch funding details from API
-        setFunding(data); // Set fetched data to state
-        setIsGoalReached(data.progress >= 100); // Check if funding goal is reached
+        const data = await fundingDetail(fundingId); 
+        setFunding(data); 
+        setIsGoalReached(data.progress >= 100); 
       }
     } catch (error) {
       console.error('Failed to fetch data:');
     }
   }, [fundingId]);
 
-  // useEffect to fetch data on component mount
+ 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -42,16 +42,16 @@ const FundingDetail: React.FC = () => {
     }
 
     const joinFundingDto: JoinFundingDto = {
-      fundingId: Number(fundingId), // Convert fundingId to number
+      fundingId: Number(fundingId), 
       amount,
       memberId: funding?.memberId || null,
-      groupId: funding?.groupId || null,
-      paymentMethodListId: funding?.paymentMethodListId || null,
     };
 
     try {
-      await joinFunding(joinFundingDto); // Send POST request to join funding
+      await joinFunding(joinFundingDto);
       setNotification({ type: 'success', message: '펀딩이 성공적으로 완료되었습니다!' });
+
+      setAmount(null);
 
       // Refetch the data after successful participation
       fetchData();
@@ -61,13 +61,15 @@ const FundingDetail: React.FC = () => {
     } catch (err) {
       setNotification({ type: 'error', message: '펀딩 참여에 실패하였습니다.' });
 
+
+      setAmount(null);
       // Hide notification after 3 seconds
       setTimeout(() => setNotification(null), 3000);
     }
   };
 
   if (!funding) {
-    return <div>Loading...</div>; // Show loading state if data is not yet fetched
+    return <div>Loading...</div>; 
   }
 
   return (
@@ -95,22 +97,16 @@ const FundingDetail: React.FC = () => {
         )}
 
         {/* Product or Travel Name */}
-        {funding.productName ? (
           <Typography variant="h4" gutterBottom>
             {funding.productName}
           </Typography>
-        ) : (
-          <Typography variant="h4" gutterBottom>
-            {funding.travelName}
-          </Typography>
-        )}
 
         {/* Host Information */}
         <Typography variant="h6" sx={{ mt: 2 }}>
           펀딩 주최
         </Typography>
         <Typography variant="body1">
-          {funding.groupName ? funding.groupName : funding.memberName}
+          {funding.groupName ? funding.groupName : funding.nickName}
         </Typography>
 
         {/* Progress */}

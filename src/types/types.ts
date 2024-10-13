@@ -16,11 +16,9 @@ export interface FundingDto{
      memberId: number;
      groupId?: number;
      groupName?: string;
-     memberName: string;
+     nickName: string;
      productId: number;
      productName: string;
-     travelId?: number;
-     travelName?: string;
      progress: number;
      totalFundingAmount: number;
      currentFundingAmount: number;
@@ -31,7 +29,7 @@ export interface FundingDto{
 
 export interface MyPageDto{
  fundingListDtos: FundingDto[];
- myMainPaymentMethod: PaymentMethod;
+ mainPaymentMethodDto: PaymentMethod;
  memberDto: MemberDto;
  myActivity: MyActivity;
 }
@@ -76,37 +74,48 @@ export interface MyActivity{
 }
 
 export interface MemberDto{
-    memberId: number;
-    account: string;
-    email: string;
-    memberName: string;
+    memberId: number,
+    role: string,
+    email: string,
 
-    memberStatus: number;
+    nickName: string,
 
-    provider: string; //공급자 (google, facebook ...)
-    providerId: string; //공급 아이디 ?
+    provider: string, //공급자 (google, facebook ...)
 
-    enabled: boolean;
-    banned: boolean;
+    enabled: boolean,
+    banned: boolean,
+
+    memberStatus: string,
+    memberStatusCode: number,
+    statusExpires: Date,
 }
 
 export interface PaymentMethod{
-    paymentMethodId: number;
-    paymentCode: number;
-    paymentName: string;
-    accountNumber: string;
-    availableAmount: number;
+    paymentMethodListId: number,
+    paymentMethodId: number,
+    paymentMethodName: string,
+    paymentMethodAccountNumber: string,
+    memberId: number,
+    mainPayment: boolean,
+    availableAmount: number,
 }
 
 export interface JoinFundingDto{
     fundingId: number,
     amount: number,
     memberId: number,
-    groupId: number,
-    paymentMethodListId: number,
 }
 
-export interface RegisterDto{
-    account: string,
-    tel: string
+export interface MyPaymentMethodList{
+    paymentMethodLists: PaymentMethod[];
+    paymentMethods: PaymentMethodDto[];
+    mainPaymentMethod: PaymentMethod;
+}
+
+export interface PaymentMethodDto{
+    paymentCode: number,
+    paymentMethodId: number,
+    paymentName: string,
+    accountNumber: string,
+    availableAmount: number
 }
